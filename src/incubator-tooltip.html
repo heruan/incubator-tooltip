@@ -124,6 +124,15 @@ See <a href="https://vaadin.com/license/cval-3">the website</a> for the complete
               type: String,
               value: 'dark',
               reflectToAttribute: true
+            },
+
+            /**
+             * The delay before showing the tooltip (in milliseconds).
+             */
+            delay: {
+              type: Number,
+              value: 0,
+              reflectToAttribute: true
             }
           };
         }
@@ -291,7 +300,14 @@ See <a href="https://vaadin.com/license/cval-3">the website</a> for the complete
         }
 
         show() {
-          this.hidden = false;
+          if (this.__timeout) {
+            clearTimeout(this.__timeout);
+          }
+          if (this.delay && this.delay > 0) {
+            this.__timeout = setTimeout(() => this.hidden = false, this.delay);
+          } else {
+            this.hidden = false;
+          }
         }
 
         hide() {
